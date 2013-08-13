@@ -18,14 +18,17 @@ html, body{ height: 100%; font-family: Arial, Helvetica, sans-serif; }
 .question__status_error{ background: red; }
 .question__status_done{ background: green; }
 .question__error-comment{ color: red; }
-.question_buttons{ position: absolute; right: 10px; top: 12px; }
-.question-form__button{  width: 100px; height: 30px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px; }
 
 .footer{ position: fixed; height: 50px; width: 100%; bottom: 0; left: 0; background: #000; color: #fff;}
 .footer__status{ margin: 10px 0; }
+.footer__buttons{ position: absolute; right: 10px; top: 12px; }
+.footer__button{  width: 100px; height: 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px; }
+.footer__options{ position: absolute; right: 340px; top: 18px; }
+.footer__options_label{ padding-left: 5px; }
+
 .status_description{float: left; color: #fff; font-size: 26px; margin: 0 10px; }
 .status__item{ float: left; width: 30px; height: 30px; border: 1px solid #ccc; background: #C0ABA3; 
     -webkit-border-radius: 90px;
@@ -38,5 +41,3 @@ html, body{ height: 100%; font-family: Arial, Helvetica, sans-serif; }
 .status__item-number{ display: block; padding-top: 5px; text-decoration: none; color: #000; }
 .status__item_done{ background: #699D41; }
 .status__item_error{ background: #D24411; }
-.footer__options{ position: absolute; right: 340px; top: 18px; }
-.footer__options_label{ padding-left: 5px; }

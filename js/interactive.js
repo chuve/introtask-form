@@ -26,6 +26,7 @@ $(function(){
         if (!$target.hasClass('active')) {
             $all_questions_wrap.slideUp().parent().removeClass('active');
             $target.addClass('active').children('.question__wrapper').slideDown();
+            $target.find('.question__answer').focus();
             check_empty(false);
         }
         return false;
@@ -62,11 +63,13 @@ $(function(){
 
     $('.status__item').click(function(){ // function link to current question from footer status items
         if( $('.question-form__disable-accordion').prop("checked") ){
+            check_empty(false);
             var $question_number = $(this).attr('id') - 1;
             var $current_question = $all_questions.eq($question_number);
             if(!$current_question.hasClass('active')){
                 $all_questions_wrap.slideUp().parent().removeClass('active');
                 $current_question.addClass('active').children('.question__wrapper').slideDown();
+                $current_question.find('.question__answer').focus();
             }
         }
     });
@@ -77,9 +80,11 @@ $(function(){
 
     function check_empty(notification){
         var message = 'Нет ответа на данный вопрос, пожалуйста дайте ответ.';
-        if(notification){
+        var errors = [];
+        if(notification === true){
             $('.question__answer').each(function(index, element){
                 if ($(element).val() === ''){
+                    errors.push($(element).attr('id'));
                     $all_questions.eq(index).find('.question__error-comment').html(message);
                     $all_questions.eq(index).find('.question__status').removeClass('question__status_error question__status_done').addClass('question__status_error');
                     $all_status_items.eq(index).removeClass('status__item_error status__item_done').addClass('status__item_error');
@@ -98,13 +103,34 @@ $(function(){
                 }
             });
         }
+        return errors;
     }
 
-    $('.footer__button_send').click(function(){
-        check_empty(true);
+    $('.footer__button_send').click(function(){ // send form
+        var errors = check_empty(true);
+        var form = $('.question-form').serialize();
+        if(errors.length === 0){
+            $.ajax({
+                type: 'POST',
+                url: 'send_form.php',
+                data: form,
+                timeout: 5000,
+                beforeSend: function(){
+                    $('html body').css('overflow-y','hidden');
+                    $('.body__overlay').css('height',$(document).height()).show();
+                },
+                success: function(){
+
+                },
+                error: function(){
+                    $('html body').css('overflow-y','');
+                    $('.body__overlay').hide();
+                }   
+            });
+        }
     });
 
-    $('.footer__button_reset').click(function(){ // reset form function
+    $('.footer__button_reset').click(function(){ // reset form
         var notice = confirm('Все введенные вами данные будут утеряны. Вы уверены, что хотите очистить анкету? ');
         if(notice) {
             $('.question__answer').val('');
@@ -115,7 +141,7 @@ $(function(){
         }
     });
 
-    $('.footer__button_save').click(function(){
+    $('.footer__button_save').click(function(){ // save form 
         toStorage('.question-form');
     });
 

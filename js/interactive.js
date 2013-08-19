@@ -112,7 +112,7 @@ $(function(){
         if(errors.length === 0){
             $.ajax({
                 type: 'POST',
-                url: 'send_form.php',
+                url: '',
                 data: form,
                 timeout: 5000,
                 beforeSend: function(){
@@ -120,12 +120,16 @@ $(function(){
                     $('.body__overlay').css('height',$(document).height()).show();
                 },
                 success: function(){
-
+                    setTimeout(function(){ // like a fake request to server with timeout
+                        $('html body').css('overflow-y','');
+                        $('.body__overlay').hide();
+                        alert('Ваша анкета отправлена! Желаем вам удачи!');
+                    },5000);
                 },
                 error: function(){
                     $('html body').css('overflow-y','');
                     $('.body__overlay').hide();
-                }   
+                }
             });
         }
     });
